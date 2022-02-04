@@ -17,7 +17,7 @@ void main(){
 		wait(NULL);
 		p = fork();
 	}
-	char *argv[] = {"xterm","-e","./gettyTest",NULL};
+	char *argv[] = {"xterm","-e","./getty",NULL};
 	char *cmd = "xterm";
 	if(!p){
 		if(execvp(cmd,argv) == -1){
