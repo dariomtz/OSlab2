@@ -12,7 +12,7 @@ char c;
 int main(){
 	pid_t p;
     int i;
-	char* argv[] = { NULL };
+	char* argv[] = { NULL, NULL };
 
 	while(1) {
 		printf(">");
