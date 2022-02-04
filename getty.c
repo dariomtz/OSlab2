@@ -10,20 +10,27 @@ char password[50];
 char buffer[50];
 FILE *file;
 int f;
+int initPid;
 
 void shutdownHandler(int sig){
 	if (sig != SIGUSR1) return;
-    printf("I was sent to die %d\n", getpid());
-	kill(getppid(), SIGUSR1);
-	//exit(0);
+    if(initPid != 0)
+	    kill(initPid, SIGUSR1);
+    else 
+        exit(0);
 }
 
-int main(){
-    file = fopen("./passwd.txt", "r");
-    char *argv[] = {NULL};
+int main(int argc, char *argv[]){
+    char *arguments[] = {NULL};
 
+    if(argc == 2){
+        // initPid was supplied
+        initPid = atoi(argv[1]);
+    }
+    
     signal(SIGUSR1, shutdownHandler);
 
+    file = fopen("./passwd.txt", "r");
     while(1){
         printf("usernamme: ");
         scanf(" %[^\n]", username); 
@@ -40,7 +47,7 @@ int main(){
                 if(strcmp(password, buffer)==0){
                     f = fork();
                     if (!f)
-                        execvp("./sh", argv);
+                        execvp("./sh", arguments);
                     wait(NULL);
                 }
             }else // skip rest of line
