@@ -11,9 +11,18 @@ char buffer[50];
 FILE *file;
 int f;
 
+void shutdownHandler(int sig){
+	if (sig != SIGUSR1) return;
+    printf("I was sent to die %d\n", getpid());
+	kill(getppid(), SIGUSR1);
+	//exit(0);
+}
+
 int main(){
     file = fopen("./passwd.txt", "r");
     char *argv[] = {NULL};
+
+    signal(SIGUSR1, shutdownHandler);
 
     while(1){
         printf("usernamme: ");
