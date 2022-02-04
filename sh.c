@@ -20,4 +20,5 @@ void main(){
 		wait(NULL);
 		printf(">");
 	}
+
 }
