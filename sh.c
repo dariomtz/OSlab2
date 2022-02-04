@@ -12,14 +12,11 @@ char c;
 int main(){
 	pid_t p;
     int i;
-	char* argv[] = { NULL, NULL };
+	char* argv[] = { NULL };
+
 	while(1) {
 		printf(">");
         scanf(" %[^\n]",buffer);
-        // contar espacios
-        // revisar si la ultima palabra es &
-        // restar un espacio
-        // hacer un maloc con ese int
         sscanf(buffer, " %s", cmd);
 
         if(strcmp(cmd,"exit") == 0)
@@ -27,6 +24,7 @@ int main(){
         
         if(strcmp(cmd,"shutdown") == 0){
             kill(getppid(), SIGUSR1);
+            break; // we dont want to exec shutdown
         }
 
         i = 0;

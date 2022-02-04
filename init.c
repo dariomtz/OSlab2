@@ -8,27 +8,31 @@
 
 void shutdownHandler(int sig){
 	if (sig != SIGUSR1) return;
-	printf("I was sent to die %d\n", getpid());
 	kill(0, SIGKILL);
 }
 
-void main(){
+int main(){
+	char pidStr[10];
+	sprintf(pidStr, "%d", getpid());
 
 	signal(SIGUSR1, shutdownHandler);
+
 	pid_t p;
 	for(int i = 0; i< MAXCHILDS; i++){
 		p = fork();
 		if(!p)break;
 	}
+
 	while(p){
 		wait(NULL);
 		p = fork();
 	}
-	char *argv[] = {"xterm","-e","./getty",NULL};
+
+	// Only child processes get here
+	char *argv[] = {"xterm","-e","./getty", pidStr, NULL};
 	char *cmd = "xterm";
-	if(!p){
-		if(execvp(cmd,argv) == -1){
-			printf("Hubo un error, soy %d\n",getpid());
-		}
-	}
+	execvp(cmd,argv);
+
+	// Return statement unreachable
+	return 0;
 }
