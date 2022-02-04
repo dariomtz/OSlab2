@@ -1,3 +1,6 @@
+getty
+sh
+init
 # Prerequisites
 *.d
 
