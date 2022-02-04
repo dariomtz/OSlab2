@@ -21,7 +21,8 @@ void shutdownHandler(int sig){
 }
 
 int main(int argc, char *argv[]){
-    char *arguments[] = {NULL};
+    char *sh = "./sh";
+    char *arguments[] = {sh, NULL};
 
     if(argc == 2){
         // initPid was supplied
@@ -47,7 +48,7 @@ int main(int argc, char *argv[]){
                 if(strcmp(password, buffer)==0){
                     f = fork();
                     if (!f)
-                        execvp("./sh", arguments);
+                        execvp(sh, arguments);
                     wait(NULL);
                 }
             }else // skip rest of line
