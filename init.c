@@ -6,8 +6,15 @@
 
 #define MAXCHILDS 6
 
+void shutdownHandler(int sig){
+	if (sig != SIGUSR1) return;
+	printf("I was sent to die %d\n", getpid());
+	kill(0, SIGKILL);
+}
+
 void main(){
-	
+
+	signal(SIGUSR1, shutdownHandler);
 	pid_t p;
 	for(int i = 0; i< MAXCHILDS; i++){
 		p = fork();
@@ -22,6 +29,6 @@ void main(){
 	if(!p){
 		if(execvp(cmd,argv) == -1){
 			printf("Hubo un error, soy %d\n",getpid());
-			}
+		}
 	}
 }
